@@ -22,4 +22,4 @@ class Channeldata(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'ChannelData'
+        db_table = 'channeldata'

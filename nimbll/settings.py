@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -25,12 +27,13 @@ SECRET_KEY = 'django-insecure-w*q@igbn=90bt(qv7m^h9okcmy)d8x@2jneloa45it=jmcg!6-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,7 +62,7 @@ ROOT_URLCONF = 'nimbll.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,12 +83,12 @@ WSGI_APPLICATION = 'nimbll.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Nimbl',
-        'USER': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
-        'PASSWORD': ''
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'nimbl_db',
+        'USER': 'nimbladmin',
+        'PASSWORD': 'nimbladmin2023',
+        'HOST': 'database-2.cfennmak0nym.us-east-1.rds.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
@@ -124,9 +127,81 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
+MEDIA_URL = os.path.join('/media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# JAZZMIN
+
+JAZZMIN_SETTINGS = {
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "Nimbl",
+
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": "Nimbl",
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "Nimbl",
+
+    "site_logo": "main/images/nimbl_logo.svg",
+
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        # {"name": "Главная",  "url": "main", "permissions": ["auth.view_user"]},
+        # {"name": "Аналитика за ВС РК",  "url": "statistics", "permissions": ["auth.view_user"]},
+        # {"name": "Ссылки",  "url": "links"}
+    ],
+
+    "welcome_sign": "Welcome to the Nimbl",
+
+    "copyright": "Nimbl",
+
+    # The model admin to search from the search bar, search bar omitted if excluded
+    "search_model": "auth.User",
+
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-white navbar-light",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-outline-warning",
+        "danger": "btn-outline-danger",
+        "success": "btn-outline-success"
+    }
+}
+
+JAZZMIN_SETTINGS["show_ui_builder"] = True
+
+
+

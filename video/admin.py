@@ -17,6 +17,24 @@ class VideoanalyticsAdmin(admin.ModelAdmin):
     list_display_links = ('video', 'watch_time', 'ctr', 'avg_view_length', 'drop_off_rate', 'audience_retention')
     search_fields =('video', 'watch_time', 'ctr', 'avg_view_length', 'drop_off_rate', 'audience_retention')
 
+class VideodetailsAdmin(admin.ModelAdmin):
+    list_display = ['video_id', 'title', 'description', 'thumbnail', 'video_file', 'uploader','duration', 'views', 'likes', 'fun_tokens', 'value_tokens', 'comments', 'tags', 'upload_date', 'category', 'privacy']
+    list_display_links = ('video_id', 'title', 'description')
+    search_fields =('video_id', 'title', 'description')
+
+class ViewerinformationAdmin(admin.ModelAdmin):
+    list_display = ['user', 'video', 'geo_location', 'device', 'referrer']
+    list_display_links = ('user', 'video', 'geo_location')
+    search_fields =('user', 'video', 'geo_location')
+
+class ViewsAdmin(admin.ModelAdmin):
+    list_display = ['view_id', 'user', 'video', 'view_time']
+    list_display_links = ('view_id', 'user', 'video', 'view_time')
+    search_fields =('view_id', 'user', 'video', 'view_time')
+
 admin.site.register(Categories, CategoriesAdmin)
 admin.site.register(Playlists, PlaylistsAdmin)
 admin.site.register(Videoanalytics, VideoanalyticsAdmin)
+admin.site.register(Videodetails, VideodetailsAdmin)
+admin.site.register(Viewerinformation, ViewerinformationAdmin)
+admin.site.register(Views, ViewsAdmin)

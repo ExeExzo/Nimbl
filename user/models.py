@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Userdata(models.Model):
+    user_id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=255)
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
@@ -12,4 +13,4 @@ class Userdata(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'UserData'
+        db_table = 'userdata'

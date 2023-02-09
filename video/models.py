@@ -1,36 +1,35 @@
 from django.db import models
 from user.models import Userdata
-
 # Create your models here.
 
 class Categories(models.Model):
-    category_id = models.AutoField(db_column='Category_id', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=255)  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=255)  # Field name made lowercase.
-    parent_id = models.IntegerField(db_column='Parent_id')  # Field name made lowercase.
-    created_at = models.DateTimeField(db_column='Created_at')  # Field name made lowercase.
-    updated_at = models.DateTimeField(db_column='Updated_at')  # Field name made lowercase.
+    category_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    parent_id = models.IntegerField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'Categories'
+        db_table = 'categories'
 
 
 class Playlists(models.Model):
-    playlist_id = models.AutoField(db_column='Playlist_id', primary_key=True)  # Field name made lowercase.
-    user = models.ForeignKey('user.Userdata', models.DO_NOTHING, db_column='User_id')  # Field name made lowercase.
-    playlist_name = models.CharField(db_column='Playlist_name', max_length=255)  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=255)  # Field name made lowercase.
-    created_at = models.DateTimeField(db_column='Created_at')  # Field name made lowercase.
-    updated_at = models.DateTimeField(db_column='Updated_at')  # Field name made lowercase.
+    playlist_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(Userdata, models.DO_NOTHING)
+    playlist_name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'Playlists'
+        db_table = 'playlists'
 
 
 class Videoanalytics(models.Model):
-    video = models.ForeignKey('video.Videodetails', models.DO_NOTHING)
+    video = models.ForeignKey('Videodetails', models.DO_NOTHING , related_name='video+')
     watch_time = models.TimeField(blank=True, null=True)
     ctr = models.FloatField(blank=True, null=True)
     avg_view_length = models.TimeField(blank=True, null=True)
@@ -39,7 +38,7 @@ class Videoanalytics(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'VideoAnalytics'
+        db_table = 'videoanalytics'
 
 
 class Videodetails(models.Model):
@@ -48,8 +47,8 @@ class Videodetails(models.Model):
     description = models.TextField(blank=True, null=True)
     thumbnail = models.CharField(max_length=255, blank=True, null=True)
     video_file = models.CharField(max_length=255, blank=True, null=True)
-    uploader = models.ForeignKey('user.Userdata', models.DO_NOTHING, db_column='uploader')
-    duration = models.TimeField(blank=True, null=True)
+    uploader = models.ForeignKey(Userdata, models.DO_NOTHING, db_column='uploader')
+    duration = models.DurationField(blank=True, null=True)
     views = models.IntegerField(blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True)
     fun_tokens = models.IntegerField(blank=True, null=True)
@@ -58,31 +57,31 @@ class Videodetails(models.Model):
     tags = models.TextField(blank=True, null=True)
     upload_date = models.DateTimeField(blank=True, null=True)
     category = models.ForeignKey(Categories, models.DO_NOTHING, db_column='category')
-    privacy = models.CharField(max_length=8, blank=True, null=True)
+    privacy = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'VideoDetails'
+        db_table = 'videodetails'
 
 
 class Viewerinformation(models.Model):
-    user = models.ForeignKey(Userdata, models.DO_NOTHING, db_column='User_id')  # Field name made lowercase.
-    video = models.ForeignKey(Videodetails, models.DO_NOTHING)
+    user = models.ForeignKey(Userdata, models.DO_NOTHING)
+    video = models.ForeignKey('Videodetails', models.DO_NOTHING, related_name='video+')
     geo_location = models.CharField(max_length=255, blank=True, null=True)
     device = models.CharField(max_length=255, blank=True, null=True)
     referrer = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'ViewerInformation'
+        db_table = 'viewerinformation'
 
 
 class Views(models.Model):
-    view_id = models.AutoField(db_column='View_id', primary_key=True)  # Field name made lowercase.
-    user = models.ForeignKey(Userdata, models.DO_NOTHING, db_column='User_id')  # Field name made lowercase.
-    video = models.ForeignKey(Videodetails, models.DO_NOTHING, db_column='Video_id',related_name="video1")  # Field name made lowercase.
-    view_time = models.DateTimeField(db_column='View_time')  # Field name made lowercase.
+    view_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(Userdata, models.DO_NOTHING)
+    video = models.ForeignKey('Videodetails', models.DO_NOTHING, related_name='video+')
+    view_time = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'Views'
+        db_table = 'views'
