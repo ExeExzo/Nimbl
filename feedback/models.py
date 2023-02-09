@@ -17,14 +17,14 @@ class Comment(models.Model):
         db_table = 'comment'
 
 class Dislikes(models.Model):
-    dislike_id = models.AutoField(db_column='Dislike_id', primary_key=True)  # Field name made lowercase.
-    user = models.ForeignKey(Userdata, models.DO_NOTHING, db_column='User_id')  # Field name made lowercase.
-    video = models.ForeignKey(Videodetails, models.DO_NOTHING, related_name='video+', db_column='Video_id')  # Field name made lowercase.
-    dislike_time = models.DateTimeField(db_column='Dislike_time')  # Field name made lowercase.
+    dislike_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(Userdata, models.DO_NOTHING)
+    video = models.ForeignKey(Videodetails, models.DO_NOTHING, related_name='video+')
+    dislike_time = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'Dislikes'
+        db_table = 'dislikes'
 
 class Likes(models.Model):
     like_id = models.AutoField(primary_key=True)
