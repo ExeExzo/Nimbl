@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Form</title>
+</head>
+<body>
+    <h1>Login Form</h1>
+    <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#login-form').on('submit', function(event) {
+                event.preventDefault();
+                var formData = {
+                    'username': $('#username').val(),
+                    'password': $('#password').val()
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/token/',
+                    data: formData,
+                    success: function(response) {
+                        localStorage.setItem('access_token', response.access);
+                        localStorage.setItem('refresh_token', response.refresh);
+                        $('#response').html('Login successful');
+                    },
+                    error: function(response) {
+                        $('#response').html('Login failed');
+                    }
+                });
+            });
+
+            $('#refresh-token').on('click', function(event) {
+                event.preventDefault();
+                var refreshToken = localStorage.getItem('refresh_token');
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/token/refresh/',
+                    data: { 'refresh': refreshToken },
+                    success: function(response) {
+                        localStorage.setItem('access_token', response.access);
+                        $('#response').html('Token refreshed');
+                    },
+                    error: function(response) {
+                        $('#response').html('Token refresh failed');
+                    }
+                });
+            });
+
+            $('#verify-token').on('click', function(event) {
+                event.preventDefault();
+                var accessToken = localStorage.getItem('access_token');
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/token/verify/',
+                    data: { 'token': accessToken },
+                    success: function(response) {
+                        $('#response').html('Token is valid');
+                    },
+                    error: function(response) {
+                        $('#response').html('Token is invalid');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -9,7 +9,11 @@ class Userdata(models.Model):
     password = models.CharField(max_length=255)
     profile_picture = models.CharField(max_length=255, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-    location = models.CharField(max_length=255, blank=True, null=True)
+    location_name = models.CharField(max_length=255, blank=True, null=True)
+    last_login = models.DateField(blank=True, null=True)
+    is_authorized = models.BooleanField(blank=True, null=True)
+    is_superuser = models.BooleanField(blank=True, null=True)
+    is_banned = models.BooleanField(blank=True, null=True)
 
     class Meta:
         managed = False
